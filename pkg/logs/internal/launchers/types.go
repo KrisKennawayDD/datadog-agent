@@ -33,6 +33,9 @@ type SourceProvider interface {
 	// SubscribeForType returns channels containing the new added and removed sources matching the provided type.
 	SubscribeForType(sourceType string) (added chan *sources.LogSource, removed chan *sources.LogSource)
 
+	// SubscribeAll returns channels containing all added and removed sources.
+	SubscribeAll() (added chan *sources.LogSource, removed chan *sources.LogSource)
+
 	// GetAddedForType returns channels containing the new added sources matching the provided type.
 	GetAddedForType(sourceType string) chan *sources.LogSource
 }

@@ -1,0 +1,41 @@
+This should be an inspectably impact-free change, at the cost of readability;
+that is, a reviewer should be able to tell easiliy from each commit that, when
+cca_in_ad is false, the behavior does not change.
+
+When the cca_in_ad setting is true:
+
+* AD sends CCA configs for containers without other LogsConfig
+    * [DONE] AD no longer sends service configs (FIXME's)
+    * [WIP] AD sends CCA configs -- need to figure out what these look like
+
+* Logs-Agent doesn't handle services anymore
+    * [DONE] AD logs scheduler does not send services
+    * [DONE] CCA scheduler disabled
+    * [DONE] k8s launcher disabled
+    * [DONE] Docker launcher only pairs sources with services if feature flag is false
+
+* Logs-Agent handles CCA configs
+    * always handled by the (new) container launcher, creating child sources with
+      Config.Type=FileType when necessary.
+
+QA:
+ - docker socket inaccessible
+ - docker daemon killed during logging
+ - docker daemon stopped during logging, later restarted
+ - various container files inaccessible
+ - docker_container_use_file but /var/lib/docker/containers not accessible -> fall back to socket
+ - CCA + unlabeled container -> source/service based on image name
+ - container with source+service set --> results in stream-logs
+ - container with only service set --> results in stream-logs with default from image name
+ - container with only source set --> results in stream-logs with default from image name
+ - container with [{}] --> default source and service from image name
+ - container with 'service:foo' standard tag -> service=foo, default source (TODO: how to set this tag?)
+
+TODO: (search // TODO in code for authoritative list)
+ - shutdown for file sources/tailers
+ - various directories for various file modes
+
+Minor Bits:
+ - doc, test pointer-equality of added and removed sources
+ - move tailerfactory to /internal/?
+ - doc for AD, logs scheduler whether configs are unscheduled / sources are removed on stop
