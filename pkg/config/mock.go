@@ -5,7 +5,14 @@
 
 package config
 
-import "strings"
+import (
+	"strings"
+	"testing"
+)
+
+var (
+	isConfigMocked = false
+)
 
 // MockConfig should only be used in tests
 type MockConfig struct {
@@ -19,6 +26,29 @@ func (c *MockConfig) Set(key string, value interface{}) {
 
 // Mock is creating and returning a mock config
 func Mock() *MockConfig {
+	// Configure Datadog global configuration
+	Datadog = NewConfig("datadog", "DD", strings.NewReplacer(".", "_"))
+	// Configuration defaults
+	InitConfig(Datadog)
+	return &MockConfig{Datadog}
+}
+
+// MockAndClean is creating and returning a mock config. This also register a cleanup function to reset the
+// configuration after the test.
+func MockAndClean(t *testing.T) *MockConfig {
+	if isConfigMocked {
+		// The configuration is already mocked.
+		return &MockConfig{Datadog}
+	}
+
+	isConfigMocked = true
+
+	oldDatadogConfig := Datadog // keep a ref on the original configuration
+	t.Cleanup(func() {
+		Datadog = oldDatadogConfig
+		isConfigMocked = false
+	})
+
 	// Configure Datadog global configuration
 	Datadog = NewConfig("datadog", "DD", strings.NewReplacer(".", "_"))
 	// Configuration defaults
