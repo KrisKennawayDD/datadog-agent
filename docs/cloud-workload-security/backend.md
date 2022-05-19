@@ -37,7 +37,8 @@ CWS logs have the following JSON schema:
             "type": "object",
             "required": [
                 "cmd"
-            ]
+            ],
+            "description": "BPFEventSerializer serializes a BPF event to JSON"
         },
         "BPFMap": {
             "properties": {
@@ -51,7 +52,8 @@ CWS logs have the following JSON schema:
                 }
             },
             "additionalProperties": false,
-            "type": "object"
+            "type": "object",
+            "description": "BPFMapSerializer serializes a BPF map to JSON"
         },
         "BPFProgram": {
             "properties": {
@@ -80,7 +82,8 @@ CWS logs have the following JSON schema:
                 }
             },
             "additionalProperties": false,
-            "type": "object"
+            "type": "object",
+            "description": "BPFProgramSerializer serializes a BPF map to JSON"
         },
         "BindEvent": {
             "properties": {
@@ -93,7 +96,8 @@ CWS logs have the following JSON schema:
             "type": "object",
             "required": [
                 "addr"
-            ]
+            ],
+            "description": "BindEventSerializer serializes a bind event to JSON"
         },
         "ContainerContext": {
             "properties": {
@@ -103,7 +107,8 @@ CWS logs have the following JSON schema:
                 }
             },
             "additionalProperties": false,
-            "type": "object"
+            "type": "object",
+            "description": "ContainerContextSerializer serializes a container context to JSON"
         },
         "DDContext": {
             "properties": {
@@ -117,7 +122,8 @@ CWS logs have the following JSON schema:
                 }
             },
             "additionalProperties": false,
-            "type": "object"
+            "type": "object",
+            "description": "DDContextSerializer serializes a span context to JSON"
         },
         "DNSEvent": {
             "properties": {
@@ -134,7 +140,8 @@ CWS logs have the following JSON schema:
             "type": "object",
             "required": [
                 "id"
-            ]
+            ],
+            "description": "DNSEventSerializer serializes a dns event to JSON"
         },
         "DNSQuestion": {
             "properties": {
@@ -167,7 +174,8 @@ CWS logs have the following JSON schema:
                 "name",
                 "size",
                 "count"
-            ]
+            ],
+            "description": "DNSQuestionSerializer serializes a DNS question to JSON"
         },
         "EventContext": {
             "properties": {
@@ -189,7 +197,8 @@ CWS logs have the following JSON schema:
                 }
             },
             "additionalProperties": false,
-            "type": "object"
+            "type": "object",
+            "description": "EventContextSerializer serializes an event context to JSON"
         },
         "File": {
             "properties": {
@@ -258,7 +267,8 @@ CWS logs have the following JSON schema:
                 },
                 "access_time": {
                     "type": "string",
-                    "format": "date-time"
+                    "format": "date-time",
+                    "description": "File access time"
                 },
                 "modification_time": {
                     "type": "string",
@@ -276,7 +286,8 @@ CWS logs have the following JSON schema:
             "required": [
                 "uid",
                 "gid"
-            ]
+            ],
+            "description": "FileSerializer serializes a file to JSON"
         },
         "FileEvent": {
             "properties": {
@@ -345,7 +356,8 @@ CWS logs have the following JSON schema:
                 },
                 "access_time": {
                     "type": "string",
-                    "format": "date-time"
+                    "format": "date-time",
+                    "description": "File access time"
                 },
                 "modification_time": {
                     "type": "string",
@@ -383,7 +395,8 @@ CWS logs have the following JSON schema:
             "required": [
                 "uid",
                 "gid"
-            ]
+            ],
+            "description": "FileEventSerializer serializes a file event to JSON"
         },
         "IPPort": {
             "properties": {
@@ -401,7 +414,8 @@ CWS logs have the following JSON schema:
             "required": [
                 "ip",
                 "port"
-            ]
+            ],
+            "description": "IPPortSerializer is used to serialize an IP and Port context to JSON"
         },
         "IPPortFamily": {
             "properties": {
@@ -424,7 +438,8 @@ CWS logs have the following JSON schema:
                 "family",
                 "ip",
                 "port"
-            ]
+            ],
+            "description": "IPPortFamilySerializer is used to serialize an IP, Port and address family context to JSON"
         },
         "MMapEvent": {
             "properties": {
@@ -457,7 +472,8 @@ CWS logs have the following JSON schema:
                 "length",
                 "protection",
                 "flags"
-            ]
+            ],
+            "description": "MMapEventSerializer serializes a mmap event to JSON"
         },
         "MProtectEvent": {
             "properties": {
@@ -485,7 +501,8 @@ CWS logs have the following JSON schema:
                 "vm_end",
                 "vm_protection",
                 "req_protection"
-            ]
+            ],
+            "description": "MProtectEventSerializer serializes a mmap event to JSON"
         },
         "ModuleEvent": {
             "properties": {
@@ -502,7 +519,8 @@ CWS logs have the following JSON schema:
             "type": "object",
             "required": [
                 "name"
-            ]
+            ],
+            "description": "ModuleEventSerializer serializes a module event to JSON"
         },
         "NetworkContext": {
             "properties": {
@@ -539,7 +557,8 @@ CWS logs have the following JSON schema:
                 "source",
                 "destination",
                 "size"
-            ]
+            ],
+            "description": "NetworkContextSerializer serializes the network context to JSON"
         },
         "NetworkDevice": {
             "properties": {
@@ -562,7 +581,8 @@ CWS logs have the following JSON schema:
                 "netns",
                 "ifindex",
                 "ifname"
-            ]
+            ],
+            "description": "NetworkDeviceSerializer serializes the network device context to JSON"
         },
         "PTraceEvent": {
             "properties": {
@@ -584,7 +604,8 @@ CWS logs have the following JSON schema:
             "required": [
                 "request",
                 "address"
-            ]
+            ],
+            "description": "PTraceEventSerializer serializes a mmap event to JSON"
         },
         "Process": {
             "properties": {
@@ -687,7 +708,8 @@ CWS logs have the following JSON schema:
             "required": [
                 "uid",
                 "gid"
-            ]
+            ],
+            "description": "ProcessSerializer serializes a process to JSON"
         },
         "ProcessContext": {
             "properties": {
@@ -801,7 +823,8 @@ CWS logs have the following JSON schema:
             "required": [
                 "uid",
                 "gid"
-            ]
+            ],
+            "description": "ProcessContextSerializer serializes a process context to JSON"
         },
         "ProcessCredentials": {
             "properties": {
@@ -858,14 +881,14 @@ CWS logs have the following JSON schema:
                         "type": "string"
                     },
                     "type": "array",
-                    "description": "Effective Capacity set"
+                    "description": "Effective Capability set"
                 },
                 "cap_permitted": {
                     "items": {
                         "type": "string"
                     },
                     "type": "array",
-                    "description": "Permitted Capacity set"
+                    "description": "Permitted Capability set"
                 },
                 "destination": {
                     "description": "Credentials after the operation"
@@ -882,7 +905,8 @@ CWS logs have the following JSON schema:
                 "fsgid",
                 "cap_effective",
                 "cap_permitted"
-            ]
+            ],
+            "description": "ProcessCredentialsSerializer serializes the process credentials to JSON"
         },
         "SELinuxBoolChange": {
             "properties": {
@@ -934,7 +958,8 @@ CWS logs have the following JSON schema:
                 }
             },
             "additionalProperties": false,
-            "type": "object"
+            "type": "object",
+            "description": "SELinuxEventSerializer serializes a SELinux context to JSON"
         },
         "SignalEvent": {
             "properties": {
@@ -956,7 +981,8 @@ CWS logs have the following JSON schema:
             "required": [
                 "type",
                 "pid"
-            ]
+            ],
+            "description": "SignalEventSerializer serializes a signal event to JSON"
         },
         "SpliceEvent": {
             "properties": {
@@ -974,7 +1000,8 @@ CWS logs have the following JSON schema:
             "required": [
                 "pipe_entry_flag",
                 "pipe_exit_flag"
-            ]
+            ],
+            "description": "SpliceEventSerializer serializes a splice event to JSON"
         },
         "UserContext": {
             "properties": {
@@ -988,7 +1015,8 @@ CWS logs have the following JSON schema:
                 }
             },
             "additionalProperties": false,
-            "type": "object"
+            "type": "object",
+            "description": "UserContextSerializer serializes a user context to JSON"
         }
     },
     "properties": {
@@ -1049,7 +1077,8 @@ CWS logs have the following JSON schema:
         }
     },
     "additionalProperties": false,
-    "type": "object"
+    "type": "object",
+    "description": "EventSerializer serializes an event to JSON"
 }
 
 {{< /code-block >}}
@@ -1098,7 +1127,8 @@ CWS logs have the following JSON schema:
     "type": "object",
     "required": [
         "cmd"
-    ]
+    ],
+    "description": "BPFEventSerializer serializes a BPF event to JSON"
 }
 
 {{< /code-block >}}
@@ -1130,7 +1160,8 @@ CWS logs have the following JSON schema:
         }
     },
     "additionalProperties": false,
-    "type": "object"
+    "type": "object",
+    "description": "BPFMapSerializer serializes a BPF map to JSON"
 }
 
 {{< /code-block >}}
@@ -1172,7 +1203,8 @@ CWS logs have the following JSON schema:
         }
     },
     "additionalProperties": false,
-    "type": "object"
+    "type": "object",
+    "description": "BPFProgramSerializer serializes a BPF map to JSON"
 }
 
 {{< /code-block >}}
@@ -1201,7 +1233,8 @@ CWS logs have the following JSON schema:
     "type": "object",
     "required": [
         "addr"
-    ]
+    ],
+    "description": "BindEventSerializer serializes a bind event to JSON"
 }
 
 {{< /code-block >}}
@@ -1226,7 +1259,8 @@ CWS logs have the following JSON schema:
         }
     },
     "additionalProperties": false,
-    "type": "object"
+    "type": "object",
+    "description": "ContainerContextSerializer serializes a container context to JSON"
 }
 
 {{< /code-block >}}
@@ -1252,7 +1286,8 @@ CWS logs have the following JSON schema:
         }
     },
     "additionalProperties": false,
-    "type": "object"
+    "type": "object",
+    "description": "DDContextSerializer serializes a span context to JSON"
 }
 
 {{< /code-block >}}
@@ -1282,7 +1317,8 @@ CWS logs have the following JSON schema:
     "type": "object",
     "required": [
         "id"
-    ]
+    ],
+    "description": "DNSEventSerializer serializes a dns event to JSON"
 }
 
 {{< /code-block >}}
@@ -1331,7 +1367,8 @@ CWS logs have the following JSON schema:
         "name",
         "size",
         "count"
-    ]
+    ],
+    "description": "DNSQuestionSerializer serializes a DNS question to JSON"
 }
 
 {{< /code-block >}}
@@ -1369,7 +1406,8 @@ CWS logs have the following JSON schema:
         }
     },
     "additionalProperties": false,
-    "type": "object"
+    "type": "object",
+    "description": "EventContextSerializer serializes an event context to JSON"
 }
 
 {{< /code-block >}}
@@ -1453,7 +1491,8 @@ CWS logs have the following JSON schema:
         },
         "access_time": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "File access time"
         },
         "modification_time": {
             "type": "string",
@@ -1471,7 +1510,8 @@ CWS logs have the following JSON schema:
     "required": [
         "uid",
         "gid"
-    ]
+    ],
+    "description": "FileSerializer serializes a file to JSON"
 }
 
 {{< /code-block >}}
@@ -1493,6 +1533,7 @@ CWS logs have the following JSON schema:
 | `attribute_name` | File extended attribute name |
 | `attribute_namespace` | File extended attribute namespace |
 | `flags` | File flags |
+| `access_time` | File access time |
 | `modification_time` | File modified time |
 | `change_time` | File change time |
 
@@ -1568,7 +1609,8 @@ CWS logs have the following JSON schema:
         },
         "access_time": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "File access time"
         },
         "modification_time": {
             "type": "string",
@@ -1606,7 +1648,8 @@ CWS logs have the following JSON schema:
     "required": [
         "uid",
         "gid"
-    ]
+    ],
+    "description": "FileEventSerializer serializes a file event to JSON"
 }
 
 {{< /code-block >}}
@@ -1628,6 +1671,7 @@ CWS logs have the following JSON schema:
 | `attribute_name` | File extended attribute name |
 | `attribute_namespace` | File extended attribute namespace |
 | `flags` | File flags |
+| `access_time` | File access time |
 | `modification_time` | File modified time |
 | `change_time` | File change time |
 | `destination` | Target file information |
@@ -1660,7 +1704,8 @@ CWS logs have the following JSON schema:
     "required": [
         "ip",
         "port"
-    ]
+    ],
+    "description": "IPPortSerializer is used to serialize an IP and Port context to JSON"
 }
 
 {{< /code-block >}}
@@ -1696,7 +1741,8 @@ CWS logs have the following JSON schema:
         "family",
         "ip",
         "port"
-    ]
+    ],
+    "description": "IPPortFamilySerializer is used to serialize an IP, Port and address family context to JSON"
 }
 
 {{< /code-block >}}
@@ -1743,7 +1789,8 @@ CWS logs have the following JSON schema:
         "length",
         "protection",
         "flags"
-    ]
+    ],
+    "description": "MMapEventSerializer serializes a mmap event to JSON"
 }
 
 {{< /code-block >}}
@@ -1787,7 +1834,8 @@ CWS logs have the following JSON schema:
         "vm_end",
         "vm_protection",
         "req_protection"
-    ]
+    ],
+    "description": "MProtectEventSerializer serializes a mmap event to JSON"
 }
 
 {{< /code-block >}}
@@ -1819,7 +1867,8 @@ CWS logs have the following JSON schema:
     "type": "object",
     "required": [
         "name"
-    ]
+    ],
+    "description": "ModuleEventSerializer serializes a module event to JSON"
 }
 
 {{< /code-block >}}
@@ -1869,7 +1918,8 @@ CWS logs have the following JSON schema:
         "source",
         "destination",
         "size"
-    ]
+    ],
+    "description": "NetworkContextSerializer serializes the network context to JSON"
 }
 
 {{< /code-block >}}
@@ -1914,7 +1964,8 @@ CWS logs have the following JSON schema:
         "netns",
         "ifindex",
         "ifname"
-    ]
+    ],
+    "description": "NetworkDeviceSerializer serializes the network device context to JSON"
 }
 
 {{< /code-block >}}
@@ -1950,7 +2001,8 @@ CWS logs have the following JSON schema:
     "required": [
         "request",
         "address"
-    ]
+    ],
+    "description": "PTraceEventSerializer serializes a mmap event to JSON"
 }
 
 {{< /code-block >}}
@@ -2074,7 +2126,8 @@ CWS logs have the following JSON schema:
     "required": [
         "uid",
         "gid"
-    ]
+    ],
+    "description": "ProcessSerializer serializes a process to JSON"
 }
 
 {{< /code-block >}}
@@ -2230,7 +2283,8 @@ CWS logs have the following JSON schema:
     "required": [
         "uid",
         "gid"
-    ]
+    ],
+    "description": "ProcessContextSerializer serializes a process context to JSON"
 }
 
 {{< /code-block >}}
@@ -2328,14 +2382,14 @@ CWS logs have the following JSON schema:
                 "type": "string"
             },
             "type": "array",
-            "description": "Effective Capacity set"
+            "description": "Effective Capability set"
         },
         "cap_permitted": {
             "items": {
                 "type": "string"
             },
             "type": "array",
-            "description": "Permitted Capacity set"
+            "description": "Permitted Capability set"
         },
         "destination": {
             "description": "Credentials after the operation"
@@ -2352,7 +2406,8 @@ CWS logs have the following JSON schema:
         "fsgid",
         "cap_effective",
         "cap_permitted"
-    ]
+    ],
+    "description": "ProcessCredentialsSerializer serializes the process credentials to JSON"
 }
 
 {{< /code-block >}}
@@ -2371,8 +2426,8 @@ CWS logs have the following JSON schema:
 | `fsuser` | Filesystem User name |
 | `fsgid` | Filesystem Group ID |
 | `fsgroup` | Filesystem Group name |
-| `cap_effective` | Effective Capacity set |
-| `cap_permitted` | Permitted Capacity set |
+| `cap_effective` | Effective Capability set |
+| `cap_permitted` | Permitted Capability set |
 | `destination` | Credentials after the operation |
 
 
@@ -2467,7 +2522,8 @@ CWS logs have the following JSON schema:
         }
     },
     "additionalProperties": false,
-    "type": "object"
+    "type": "object",
+    "description": "SELinuxEventSerializer serializes a SELinux context to JSON"
 }
 
 {{< /code-block >}}
@@ -2508,7 +2564,8 @@ CWS logs have the following JSON schema:
     "required": [
         "type",
         "pid"
-    ]
+    ],
+    "description": "SignalEventSerializer serializes a signal event to JSON"
 }
 
 {{< /code-block >}}
@@ -2543,7 +2600,8 @@ CWS logs have the following JSON schema:
     "required": [
         "pipe_entry_flag",
         "pipe_exit_flag"
-    ]
+    ],
+    "description": "SpliceEventSerializer serializes a splice event to JSON"
 }
 
 {{< /code-block >}}
@@ -2570,7 +2628,8 @@ CWS logs have the following JSON schema:
         }
     },
     "additionalProperties": false,
-    "type": "object"
+    "type": "object",
+    "description": "UserContextSerializer serializes a user context to JSON"
 }
 
 {{< /code-block >}}
