@@ -251,7 +251,8 @@
         },
         "access_time": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "description": "File access time"
         },
         "modification_time": {
           "type": "string",
@@ -339,7 +340,8 @@
         },
         "access_time": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "description": "File access time"
         },
         "modification_time": {
           "type": "string",
@@ -871,14 +873,14 @@
             "type": "string"
           },
           "type": "array",
-          "description": "Effective Capacity set"
+          "description": "Effective Capability set"
         },
         "cap_permitted": {
           "items": {
             "type": "string"
           },
           "type": "array",
-          "description": "Permitted Capacity set"
+          "description": "Permitted Capability set"
         },
         "destination": {
           "description": "Credentials after the operation"
