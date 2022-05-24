@@ -786,7 +786,9 @@ func (e *NetworkContext) UnmarshalBinary(data []byte) (int, error) {
 		return 0, ErrNotEnoughData
 	}
 
-	srcIP, dstIP := data[read:read+16], data[read+16:read+32]
+	var srcIP, dstIP []byte
+	SliceToArray(data[read:read+16], unsafe.Pointer(&srcIP))
+	SliceToArray(data[read+16:read+32], unsafe.Pointer(&dstIP))
 	e.Source.Port = binary.BigEndian.Uint16(data[read+32 : read+34])
 	e.Destination.Port = binary.BigEndian.Uint16(data[read+34 : read+36])
 	// padding 4 bytes
@@ -916,7 +918,8 @@ func (e *BindEvent) UnmarshalBinary(data []byte) (int, error) {
 		return 0, ErrNotEnoughData
 	}
 
-	ipRaw := data[read : read+16]
+	var ipRaw []byte
+	SliceToArray(data[read:read+16], unsafe.Pointer(&ipRaw))
 	e.AddrFamily = ByteOrder.Uint16(data[read+16 : read+18])
 	e.Addr.Port = binary.BigEndian.Uint16(data[read+18 : read+20])
 
