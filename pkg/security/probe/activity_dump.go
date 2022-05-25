@@ -1133,6 +1133,7 @@ type SocketNode struct {
 	Family string `msg:"family"`
 	Port   uint16 `msg:"port"`
 	IP     string `msg:"ip"`
+	id     string
 }
 
 // NewSocketNode returns a new SocketNode instance
@@ -1142,4 +1143,12 @@ func NewSocketNode(event *model.BindEvent) *SocketNode {
 		Port:   event.Addr.Port,
 		IP:     event.Addr.IPNet.IP.String(),
 	}
+}
+
+// GetID returns the ID of the current Socket node
+func (n *SocketNode) GetID() string {
+	if len(n.id) == 0 {
+		n.id = eval.RandString(5)
+	}
+	return n.id
 }
