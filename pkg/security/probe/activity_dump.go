@@ -998,7 +998,9 @@ func (pan *ProcessActivityNode) InsertDNSEvent(evt *model.DNSEvent) bool {
 
 // InsertSocketEvent inserts a bind event to the activity dump
 func (pan *ProcessActivityNode) InsertBindEvent(evt *model.BindEvent) bool {
-	pan.Sockets = append(pan.Sockets, NewSocketNode(evt))
+	if evt.SyscallEvent.Retval == 0 {
+		pan.Sockets = append(pan.Sockets, NewSocketNode(evt))
+	}
 	return true
 }
 
