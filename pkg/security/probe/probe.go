@@ -299,8 +299,8 @@ func (p *Probe) Setup() error {
 }
 
 // Start processing events
-func (p *Probe) Start() {
-	p.eventStream.Start(&p.wg)
+func (p *Probe) Start() error {
+	return p.eventStream.Start(&p.wg)
 }
 
 // AddEventHandler set the probe event handler
