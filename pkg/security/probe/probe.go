@@ -53,6 +53,13 @@ type EventHandler interface {
 	HandleCustomEvent(rule *rules.Rule, event *CustomEvent)
 }
 
+type EventStream interface {
+	Init(*manager.Manager, *Monitor) error
+	Start(*sync.WaitGroup) error
+	Pause() error
+	Resume() error
+}
+
 // Probe represents the runtime security eBPF probe in charge of
 // setting up the required kProbes and decoding events sent from the kernel
 type Probe struct {
@@ -68,13 +75,12 @@ type Probe struct {
 	cancelFnc      context.CancelFunc
 	wg             sync.WaitGroup
 	// Events section
-	handlers  [model.MaxAllEventType][]EventHandler
-	monitor   *Monitor
-	resolvers *Resolvers
-	event     *Event
-	perfMap   *manager.PerfMap
-	reOrderer *ReOrderer
-	scrubber  *pconfig.DataScrubber
+	handlers    [model.MaxAllEventType][]EventHandler
+	monitor     *Monitor
+	resolvers   *Resolvers
+	event       *Event
+	eventStream EventStream
+	scrubber    *pconfig.DataScrubber
 
 	// Approvers / discarders section
 	erpc                 *ERPC
@@ -232,14 +238,8 @@ func (p *Probe) Init() error {
 	}
 	defer bytecodeReader.Close()
 
-	var ok bool
-	if p.perfMap, ok = p.manager.GetPerfMap("events"); !ok {
-		return errors.New("couldn't find events perf map")
-	}
-
-	p.perfMap.PerfMapOptions = manager.PerfMapOptions{
-		DataHandler: p.reOrderer.HandleEvent,
-		LostHandler: p.handleLostEvents,
+	if err := p.eventStream.Init(p.manager, p.monitor); err != nil {
+		return err
 	}
 
 	if os.Getenv("RUNTIME_SECURITY_TESTSUITE") != "true" {
@@ -300,8 +300,7 @@ func (p *Probe) Setup() error {
 
 // Start processing events
 func (p *Probe) Start() {
-	p.wg.Add(1)
-	go p.reOrderer.Start(&p.wg)
+	p.eventStream.Start(&p.wg)
 }
 
 // AddEventHandler set the probe event handler
@@ -310,7 +309,7 @@ func (p *Probe) AddEventHandler(eventType model.EventType, handler EventHandler)
 }
 
 // DispatchEvent sends an event to the probe event handler
-func (p *Probe) DispatchEvent(event *Event, size uint64, CPU int, perfMap *manager.PerfMap) {
+func (p *Probe) DispatchEvent(event *Event) {
 	seclog.TraceTagf(event.GetEventType(), "Dispatching event %s", event)
 
 	// send wildcard first
@@ -324,7 +323,7 @@ func (p *Probe) DispatchEvent(event *Event, size uint64, CPU int, perfMap *manag
 	}
 
 	// Process after evaluation because some monitors need the DentryResolver to have been called first.
-	p.monitor.ProcessEvent(event, size, CPU, perfMap)
+	p.monitor.ProcessEvent(event)
 }
 
 // DispatchCustomEvent sends a custom event to the probe event handler
@@ -366,11 +365,6 @@ func (p *Probe) GetMonitor() *Monitor {
 	return p.monitor
 }
 
-func (p *Probe) handleLostEvents(CPU int, count uint64, perfMap *manager.PerfMap, manager *manager.Manager) {
-	seclog.Tracef("lost %d events", count)
-	p.monitor.perfBufferMonitor.CountLostEvent(count, perfMap, CPU)
-}
-
 func (p *Probe) zeroEvent() *Event {
 	*p.event = eventZero
 	return p.event
@@ -409,7 +403,7 @@ func (p *Probe) handleEvent(CPU uint64, data []byte) {
 	offset += read
 
 	eventType := event.GetEventType()
-	p.monitor.perfBufferMonitor.CountEvent(eventType, event.TimestampRaw, 1, dataLen, p.perfMap, int(CPU))
+	p.monitor.perfBufferMonitor.CountEvent(eventType, event.TimestampRaw, 1, dataLen, eventStreamMap, int(CPU))
 
 	// no need to dispatch events
 	switch eventType {
@@ -754,7 +748,7 @@ func (p *Probe) handleEvent(CPU uint64, data []byte) {
 		defer p.resolvers.ProcessResolver.DeleteEntry(event.ProcessCacheEntry.Pid, event.ResolveEventTimestamp())
 	}
 
-	p.DispatchEvent(event, dataLen, int(CPU), p.perfMap)
+	p.DispatchEvent(event)
 
 	// flush exited process
 	p.resolvers.ProcessResolver.DequeueExited()
@@ -927,12 +921,12 @@ func (p *Probe) SelectProbes(rs *rules.RuleSet) error {
 
 	// We might end up missing events during the snapshot. Ultimately we might want to stop the rules evaluation but
 	// not the perf map entirely. For now this will do though :)
-	if err := p.perfMap.Pause(); err != nil {
+	if err := p.eventStream.Pause(); err != nil {
 		return err
 	}
 	defer func() {
-		if err := p.perfMap.Resume(); err != nil {
-			log.Errorf("failed to resume perf map: %s", err)
+		if err := p.eventStream.Resume(); err != nil {
+			log.Errorf("failed to resume event stream: %s", err)
 		}
 	}()
 
@@ -1180,10 +1174,12 @@ func NewProbe(config *config.Config, statsdClient statsd.ClientInterface) (*Prob
 
 	ctx, cancel := context.WithCancel(context.Background())
 
+	supportsRingBuffers := haveRingBuffers() == nil
+
 	p := &Probe{
 		config:               config,
 		approvers:            make(map[eval.EventType]activeApprovers),
-		manager:              ebpf.NewRuntimeSecurityManager(),
+		manager:              ebpf.NewRuntimeSecurityManager(supportsRingBuffers),
 		managerOptions:       ebpf.NewDefaultOptions(),
 		ctx:                  ctx,
 		cancelFnc:            cancel,
@@ -1219,7 +1215,13 @@ func NewProbe(config *config.Config, statsdClient statsd.ClientInterface) (*Prob
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to parse CPU count")
 	}
-	p.managerOptions.MapSpecEditors = probes.AllMapSpecEditors(numCPU, p.config.ActivityDumpTracedCgroupsCount, p.config.ActivityDumpCgroupWaitListSize, supportMmapableMaps)
+	p.managerOptions.MapSpecEditors = probes.AllMapSpecEditors(
+		numCPU,
+		p.config.ActivityDumpTracedCgroupsCount,
+		p.config.ActivityDumpCgroupWaitListSize,
+		supportMmapableMaps,
+		supportsRingBuffers,
+	)
 
 	if !p.config.EnableKernelFilters {
 		log.Warn("Forcing in-kernel filter policy to `pass`: filtering not enabled")
@@ -1317,6 +1319,15 @@ func NewProbe(config *config.Config, statsdClient statsd.ClientInterface) (*Prob
 		)
 	}
 
+	if supportsRingBuffers {
+		p.managerOptions.ConstantEditors = append(p.managerOptions.ConstantEditors,
+			manager.ConstantEditor{
+				Name:  "use_ring_buffer",
+				Value: uint64(1),
+			},
+		)
+	}
+
 	// constants syscall monitor
 	if p.config.SyscallMonitor {
 		p.managerOptions.ConstantEditors = append(p.managerOptions.ConstantEditors, manager.ConstantEditor{
@@ -1343,17 +1354,6 @@ func NewProbe(config *config.Config, statsdClient statsd.ClientInterface) (*Prob
 	}
 	p.resolvers = resolvers
 
-	p.reOrderer = NewReOrderer(ctx,
-		p.handleEvent,
-		ExtractEventInfo,
-		ReOrdererOpts{
-			QueueSize:       10000,
-			Rate:            50 * time.Millisecond,
-			Retention:       5,
-			MetricRate:      5 * time.Second,
-			HeapShrinkDelta: 1000,
-		})
-
 	p.scrubber = pconfig.NewDefaultDataScrubber()
 	p.scrubber.AddCustomSensitiveWords(config.CustomSensitiveWords)
 
@@ -1362,6 +1362,12 @@ func NewProbe(config *config.Config, statsdClient statsd.ClientInterface) (*Prob
 	eventZero.resolvers = p.resolvers
 	eventZero.scrubber = p.scrubber
 	eventZero.probe = p
+
+	if supportsRingBuffers {
+		p.eventStream = NewRingBuffer(p.handleEvent)
+	} else {
+		p.eventStream = NewOrderedPerfMap(context.Background(), p.handleEvent)
+	}
 
 	return p, nil
 }
