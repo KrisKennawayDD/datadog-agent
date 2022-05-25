@@ -390,6 +390,8 @@ func (ad *ActivityDump) Insert(event *Event) (newEntry bool) {
 		return node.InsertFileEvent(&event.Open.File, event, Runtime)
 	case model.DNSEventType:
 		return node.InsertDNSEvent(&event.DNS)
+	case model.BindEventType:
+		return node.InsertBindEvent(&event.Bind)
 	}
 	return false
 }
@@ -734,6 +736,7 @@ type ProcessActivityNode struct {
 
 	Files    map[string]*FileActivityNode `msg:"files,omitempty"`
 	DNSNames map[string]*DNSNode          `msg:"dns,omitempty"`
+	Sockets  []*SocketNode                `msg:"sockets,omitempty"`
 	Children []*ProcessActivityNode       `msg:"children,omitempty"`
 }
 
@@ -993,6 +996,12 @@ func (pan *ProcessActivityNode) InsertDNSEvent(evt *model.DNSEvent) bool {
 	return true
 }
 
+// InsertSocketEvent inserts a bind event to the activity dump
+func (pan *ProcessActivityNode) InsertBindEvent(evt *model.BindEvent) bool {
+	pan.Sockets = append(pan.Sockets, NewSocketNode(evt))
+	return true
+}
+
 // FileActivityNode holds a tree representation of a list of files
 type FileActivityNode struct {
 	id             string
@@ -1117,4 +1126,20 @@ func (n *DNSNode) GetID() string {
 		n.id = eval.RandString(5)
 	}
 	return n.id
+}
+
+// SocketNode is used to store a Socket node
+type SocketNode struct {
+	Family string `msg:"family"`
+	Port   uint16 `msg:"port"`
+	IP     string `msg:"ip"`
+}
+
+// NewSocketNode returns a new SocketNode instance
+func NewSocketNode(event *model.BindEvent) *SocketNode {
+	return &SocketNode{
+		Family: model.AddressFamily(event.AddrFamily).String(),
+		Port:   event.Addr.Port,
+		IP:     event.Addr.IPNet.IP.String(),
+	}
 }
