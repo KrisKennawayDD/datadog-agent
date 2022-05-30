@@ -77,11 +77,18 @@ func (ad *ActivityDump) generateBindRule(sock *SocketNode, activityNode *Process
 	var rules []ProfileRule
 
 	if sock != nil {
-		rule := NewProfileRule(fmt.Sprintf(
-			"bind.addr.family == %s && bind.addr.ip in %s/32 && bind.addr.port == %d",
-			sock.Family, sock.IP, sock.Port),
-			ruleIDPrefix,
-		)
+		var rule ProfileRule
+		if sock.Family == "AF_INET" || sock.Family == "AF_INET6" {
+			rule = NewProfileRule(fmt.Sprintf(
+				"bind.addr.family == %s && bind.addr.ip in %s/32 && bind.addr.port == %d",
+				sock.Family, sock.IP, sock.Port),
+				ruleIDPrefix,
+			)
+		} else {
+			rule = NewProfileRule(fmt.Sprintf("bind.addr.family == %s", sock.Family),
+				ruleIDPrefix,
+			)
+		}
 		rule.Expression += fmt.Sprintf(" && process.file.path == \"%s\"",
 			activityNode.Process.FileEvent.PathnameStr)
 		for _, parent := range ancestors {
