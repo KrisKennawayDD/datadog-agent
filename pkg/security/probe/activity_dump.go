@@ -16,9 +16,12 @@ import (
 	"compress/gzip"
 	"fmt"
 	"io"
+	"net"
 	"os"
 	"path"
 	"path/filepath"
+	"regexp"
+	"strconv"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -27,7 +30,9 @@ import (
 
 	"github.com/DataDog/gopsutil/process"
 	"github.com/pkg/errors"
+	"github.com/prometheus/procfs"
 	"github.com/tinylib/msgp/msgp"
+	"golang.org/x/sys/unix"
 
 	"github.com/DataDog/datadog-agent/pkg/security/api"
 	seclog "github.com/DataDog/datadog-agent/pkg/security/log"
@@ -911,7 +916,122 @@ func (pan *ProcessActivityNode) snapshot(ad *ActivityDump) error {
 			if err = pan.snapshotFiles(p, ad); err != nil {
 				return err
 			}
+		case model.BindEventType:
+			if err = pan.snapshotBoundSockets(p, ad); err != nil {
+				return err
+			}
 		}
+	}
+	return nil
+}
+
+func (pan *ProcessActivityNode) insertSnapshotedSocket(p *process.Process, ad *ActivityDump,
+	family uint16, ip net.IP, port uint16) error {
+	evt := NewEvent(ad.adm.probe.resolvers, ad.adm.probe.scrubber, ad.adm.probe)
+	evt.Event.Type = uint64(model.BindEventType)
+
+	evt.Bind.SyscallEvent.Retval = 0
+	evt.Bind.AddrFamily = family
+	evt.Bind.Addr.IPNet.IP = ip
+	if family == unix.AF_INET {
+		evt.Bind.Addr.IPNet.Mask = net.CIDRMask(32, 32)
+	} else {
+		evt.Bind.Addr.IPNet.Mask = net.CIDRMask(128, 128)
+	}
+	evt.Bind.Addr.Port = port
+
+	if pan.InsertBindEvent(&evt.Bind) {
+		// count this new entry
+		atomic.AddUint64(ad.addedSnapshotCount[model.BindEventType], 1)
+	}
+	return nil
+}
+
+func (pan *ProcessActivityNode) snapshotBoundSockets(p *process.Process, ad *ActivityDump) error {
+	// list all the file descriptors opened by the process
+	FDs, err := p.OpenFiles()
+	if err != nil {
+		return err
+	}
+
+	// search for sockets only, exprimed in the form of "socket:[inode]"
+	r_socket, err := regexp.Compile("socket:\\[[0-9]+\\]")
+	if err != nil {
+		return err
+	}
+	r_inode, err := regexp.Compile("[0-9]+")
+	if err != nil {
+		return err
+	}
+	var sockets []uint64
+	for _, fd := range FDs {
+		if r_socket.MatchString(fd.Path) {
+			sock, err := strconv.Atoi(r_inode.FindString(fd.Path))
+			if err != nil {
+				return err
+			}
+			if sock < 0 {
+				continue
+			}
+			sockets = append(sockets, uint64(sock))
+		}
+	}
+	if len(sockets) <= 0 {
+		return nil
+	}
+
+	// init procfs to parse /proc/net/tcp,tcp6,udp,udp6 files, looking for the grabbed
+	// process socket inodes
+	proc, _ := procfs.NewFS("/proc") // TODO: take the proc path from env if avail
+	if err != nil {
+		return err
+	}
+	// looking for AF_INET sockets
+	TCP, err := proc.NetTCP()
+	if err != nil {
+		return err
+	}
+	UDP, err := proc.NetUDP()
+	if err != nil {
+		return err
+	}
+	// looking for AF_INET6 sockets
+	TCP6, err := proc.NetTCP6()
+	if err != nil {
+		return err
+	}
+	UDP6, err := proc.NetUDP6()
+	if err != nil {
+		return err
+	}
+
+	// searching for socket inode
+	for _, s := range sockets {
+		for _, sock := range TCP {
+			if sock.Inode == s {
+				pan.insertSnapshotedSocket(p, ad, unix.AF_INET, sock.LocalAddr, uint16(sock.LocalPort))
+				break
+			}
+		}
+		for _, sock := range UDP {
+			if sock.Inode == s {
+				pan.insertSnapshotedSocket(p, ad, unix.AF_INET, sock.LocalAddr, uint16(sock.LocalPort))
+				break
+			}
+		}
+		for _, sock := range TCP6 {
+			if sock.Inode == s {
+				pan.insertSnapshotedSocket(p, ad, unix.AF_INET6, sock.LocalAddr, uint16(sock.LocalPort))
+				break
+			}
+		}
+		for _, sock := range UDP6 {
+			if sock.Inode == s {
+				pan.insertSnapshotedSocket(p, ad, unix.AF_INET6, sock.LocalAddr, uint16(sock.LocalPort))
+				break
+			}
+		}
+		// not necessary found here, can be also another kind of socket (AF_UNIX, AF_NETLINK, etc)
 	}
 	return nil
 }
@@ -996,11 +1116,33 @@ func (pan *ProcessActivityNode) InsertDNSEvent(evt *model.DNSEvent) bool {
 	return true
 }
 
-// InsertSocketEvent inserts a bind event to the activity dump
-func (pan *ProcessActivityNode) InsertBindEvent(evt *model.BindEvent) bool {
-	if evt.SyscallEvent.Retval == 0 {
-		pan.Sockets = append(pan.Sockets, NewSocketNode(evt))
+func isSockAlreadyPresent(socks []*SocketNode, sock *SocketNode) bool {
+	for _, s := range socks {
+		if s.Family == sock.Family &&
+			s.Port == sock.Port &&
+			s.IP == sock.IP {
+			return true
+		}
 	}
+	return false
+}
+
+// InsertBindEvent inserts a bind event to the activity dump
+func (pan *ProcessActivityNode) InsertBindEvent(evt *model.BindEvent) bool {
+	if evt.SyscallEvent.Retval != 0 {
+		return false
+	}
+
+	sock := NewSocketNode(evt)
+	// TODO: today we did not differenciate the TCP from the UDP sockets, so if a
+	// process binds both protocols with the same addr/port, it will result of a
+	// duplicate socket.
+	// We should consider differenciate the TCP from the UDP socks, and once it will
+	// be done, this check shouldn't be needed anymore.
+	if isSockAlreadyPresent(pan.Sockets, sock) {
+		return false
+	}
+	pan.Sockets = append(pan.Sockets, sock)
 	return true
 }
 
