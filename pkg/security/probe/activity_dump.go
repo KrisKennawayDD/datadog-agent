@@ -34,6 +34,7 @@ import (
 	"github.com/tinylib/msgp/msgp"
 	"golang.org/x/sys/unix"
 
+	"github.com/DataDog/datadog-agent/pkg/config"
 	"github.com/DataDog/datadog-agent/pkg/security/api"
 	seclog "github.com/DataDog/datadog-agent/pkg/security/log"
 	"github.com/DataDog/datadog-agent/pkg/security/metrics"
@@ -982,7 +983,13 @@ func (pan *ProcessActivityNode) snapshotBoundSockets(p *process.Process, ad *Act
 
 	// init procfs to parse /proc/net/tcp,tcp6,udp,udp6 files, looking for the grabbed
 	// process socket inodes
-	proc, _ := procfs.NewFS("/proc") // TODO: take the proc path from env if avail
+	var procfsPath string
+	if config.Datadog.IsSet("procfs_path") {
+		procfsPath = config.Datadog.GetString("procfs_path")
+	} else {
+		procfsPath = "/proc"
+	}
+	proc, _ := procfs.NewFS(procfsPath)
 	if err != nil {
 		return err
 	}
