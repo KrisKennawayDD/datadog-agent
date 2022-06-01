@@ -927,7 +927,7 @@ func (pan *ProcessActivityNode) snapshot(ad *ActivityDump) error {
 }
 
 func (pan *ProcessActivityNode) insertSnapshotedSocket(p *process.Process, ad *ActivityDump,
-	family uint16, ip net.IP, port uint16) error {
+	family uint16, ip net.IP, port uint16) {
 	evt := NewEvent(ad.adm.probe.resolvers, ad.adm.probe.scrubber, ad.adm.probe)
 	evt.Event.Type = uint64(model.BindEventType)
 
@@ -945,7 +945,6 @@ func (pan *ProcessActivityNode) insertSnapshotedSocket(p *process.Process, ad *A
 		// count this new entry
 		atomic.AddUint64(ad.addedSnapshotCount[model.BindEventType], 1)
 	}
-	return nil
 }
 
 func (pan *ProcessActivityNode) snapshotBoundSockets(p *process.Process, ad *ActivityDump) error {
@@ -956,18 +955,18 @@ func (pan *ProcessActivityNode) snapshotBoundSockets(p *process.Process, ad *Act
 	}
 
 	// search for sockets only, exprimed in the form of "socket:[inode]"
-	r_socket, err := regexp.Compile("socket:\\[[0-9]+\\]")
+	rSocket, err := regexp.Compile("socket:\\[[0-9]+\\]")
 	if err != nil {
 		return err
 	}
-	r_inode, err := regexp.Compile("[0-9]+")
+	rInode, err := regexp.Compile("[0-9]+")
 	if err != nil {
 		return err
 	}
 	var sockets []uint64
 	for _, fd := range FDs {
-		if r_socket.MatchString(fd.Path) {
-			sock, err := strconv.Atoi(r_inode.FindString(fd.Path))
+		if rSocket.MatchString(fd.Path) {
+			sock, err := strconv.Atoi(rInode.FindString(fd.Path))
 			if err != nil {
 				return err
 			}
@@ -1141,10 +1140,10 @@ func (pan *ProcessActivityNode) InsertBindEvent(evt *model.BindEvent) bool {
 	}
 
 	sock := NewSocketNode(evt)
-	// TODO: today we did not differenciate the TCP from the UDP sockets, so if a
+	// TODO: today we did not differentiate the TCP from the UDP sockets, so if a
 	// process binds both protocols with the same addr/port, it will result of a
 	// duplicate socket.
-	// We should consider differenciate the TCP from the UDP socks, and once it will
+	// We should consider differentiate the TCP from the UDP socks, and once it will
 	// be done, this check shouldn't be needed anymore.
 	if isSockAlreadyPresent(pan.Sockets, sock) {
 		return false
