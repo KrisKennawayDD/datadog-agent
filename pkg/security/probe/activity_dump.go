@@ -927,7 +927,7 @@ func (pan *ProcessActivityNode) snapshot(ad *ActivityDump) error {
 }
 
 func (pan *ProcessActivityNode) insertSnapshotedSocket(p *process.Process, ad *ActivityDump,
-	family uint16, ip net.IP, port uint16) {
+	family uint16, ip net.IP, port uint16, protocol uint8) {
 	evt := NewEvent(ad.adm.probe.resolvers, ad.adm.probe.scrubber, ad.adm.probe)
 	evt.Event.Type = uint64(model.BindEventType)
 
@@ -940,6 +940,7 @@ func (pan *ProcessActivityNode) insertSnapshotedSocket(p *process.Process, ad *A
 		evt.Bind.Addr.IPNet.Mask = net.CIDRMask(128, 128)
 	}
 	evt.Bind.Addr.Port = port
+	evt.Bind.Protocol = protocol
 
 	if pan.InsertBindEvent(&evt.Bind) {
 		// count this new entry
@@ -1015,25 +1016,29 @@ func (pan *ProcessActivityNode) snapshotBoundSockets(p *process.Process, ad *Act
 	for _, s := range sockets {
 		for _, sock := range TCP {
 			if sock.Inode == s {
-				pan.insertSnapshotedSocket(p, ad, unix.AF_INET, sock.LocalAddr, uint16(sock.LocalPort))
+				pan.insertSnapshotedSocket(p, ad, unix.AF_INET, sock.LocalAddr,
+					uint16(sock.LocalPort), unix.IPPROTO_TCP)
 				break
 			}
 		}
 		for _, sock := range UDP {
 			if sock.Inode == s {
-				pan.insertSnapshotedSocket(p, ad, unix.AF_INET, sock.LocalAddr, uint16(sock.LocalPort))
+				pan.insertSnapshotedSocket(p, ad, unix.AF_INET, sock.LocalAddr,
+					uint16(sock.LocalPort), unix.IPPROTO_UDP)
 				break
 			}
 		}
 		for _, sock := range TCP6 {
 			if sock.Inode == s {
-				pan.insertSnapshotedSocket(p, ad, unix.AF_INET6, sock.LocalAddr, uint16(sock.LocalPort))
+				pan.insertSnapshotedSocket(p, ad, unix.AF_INET6, sock.LocalAddr,
+					uint16(sock.LocalPort), unix.IPPROTO_TCP)
 				break
 			}
 		}
 		for _, sock := range UDP6 {
 			if sock.Inode == s {
-				pan.insertSnapshotedSocket(p, ad, unix.AF_INET6, sock.LocalAddr, uint16(sock.LocalPort))
+				pan.insertSnapshotedSocket(p, ad, unix.AF_INET6, sock.LocalAddr,
+					uint16(sock.LocalPort), unix.IPPROTO_UDP)
 				break
 			}
 		}
@@ -1122,33 +1127,13 @@ func (pan *ProcessActivityNode) InsertDNSEvent(evt *model.DNSEvent) bool {
 	return true
 }
 
-func isSockAlreadyPresent(socks []*SocketNode, sock *SocketNode) bool {
-	for _, s := range socks {
-		if s.Family == sock.Family &&
-			s.Port == sock.Port &&
-			s.IP == sock.IP {
-			return true
-		}
-	}
-	return false
-}
-
 // InsertBindEvent inserts a bind event to the activity dump
 func (pan *ProcessActivityNode) InsertBindEvent(evt *model.BindEvent) bool {
 	if evt.SyscallEvent.Retval != 0 {
 		return false
 	}
 
-	sock := NewSocketNode(evt)
-	// TODO: today we did not differentiate the TCP from the UDP sockets, so if a
-	// process binds both protocols with the same addr/port, it will result of a
-	// duplicate socket.
-	// We should consider differentiate the TCP from the UDP socks, and once it will
-	// be done, this check shouldn't be needed anymore.
-	if isSockAlreadyPresent(pan.Sockets, sock) {
-		return false
-	}
-	pan.Sockets = append(pan.Sockets, sock)
+	pan.Sockets = append(pan.Sockets, NewSocketNode(evt))
 	return true
 }
 
@@ -1280,18 +1265,20 @@ func (n *DNSNode) GetID() string {
 
 // SocketNode is used to store a Socket node
 type SocketNode struct {
-	Family string `msg:"family"`
-	Port   uint16 `msg:"port"`
-	IP     string `msg:"ip"`
-	id     string
+	Family   string `msg:"family"`
+	Protocol string `msg:"protocol"`
+	Port     uint16 `msg:"port"`
+	IP       string `msg:"ip"`
+	id       string
 }
 
 // NewSocketNode returns a new SocketNode instance
 func NewSocketNode(event *model.BindEvent) *SocketNode {
 	return &SocketNode{
-		Family: model.AddressFamily(event.AddrFamily).String(),
-		Port:   event.Addr.Port,
-		IP:     event.Addr.IPNet.IP.String(),
+		Family:   model.AddressFamily(event.AddrFamily).String(),
+		Protocol: model.L4Protocol(event.Protocol).String(),
+		Port:     event.Addr.Port,
+		IP:       event.Addr.IPNet.IP.String(),
 	}
 }
 
