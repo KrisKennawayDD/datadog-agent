@@ -80,8 +80,8 @@ func (ad *ActivityDump) generateBindRule(sock *SocketNode, activityNode *Process
 		var rule ProfileRule
 		if sock.Family == "AF_INET" || sock.Family == "AF_INET6" {
 			rule = NewProfileRule(fmt.Sprintf(
-				"bind.addr.family == %s && bind.addr.ip in %s/32 && bind.addr.port == %d",
-				sock.Family, sock.IP, sock.Port),
+				"bind.addr.family == %s && bind.addr.protocol == %s && bind.addr.ip in %s/32 && bind.addr.port == %d",
+				sock.Family, sock.Protocol, sock.IP, sock.Port),
 				ruleIDPrefix,
 			)
 		} else {
