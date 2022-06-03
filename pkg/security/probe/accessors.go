@@ -84,6 +84,14 @@ func (m *Model) GetEvaluator(field eval.Field, regID eval.RegisterID) (eval.Eval
 			Field:  field,
 			Weight: eval.FunctionWeight,
 		}, nil
+	case "bind.addr.protocol":
+		return &eval.IntEvaluator{
+			EvalFnc: func(ctx *eval.Context) int {
+				return int((*Event)(ctx.Object).Bind.Protocol)
+			},
+			Field:  field,
+			Weight: eval.FunctionWeight,
+		}, nil
 	case "bind.async":
 		return &eval.BoolEvaluator{
 			EvalFnc: func(ctx *eval.Context) bool {
@@ -7186,6 +7194,7 @@ func (e *Event) GetFields() []eval.Field {
 		"bind.addr.family",
 		"bind.addr.ip",
 		"bind.addr.port",
+		"bind.addr.protocol",
 		"bind.async",
 		"bind.retval",
 		"bpf.async",
@@ -7843,6 +7852,8 @@ func (e *Event) GetFieldValue(field eval.Field) (interface{}, error) {
 		return e.Bind.Addr.IPNet, nil
 	case "bind.addr.port":
 		return int(e.Bind.Addr.Port), nil
+	case "bind.addr.protocol":
+		return int(e.Bind.Protocol), nil
 	case "bind.async":
 		return e.Bind.SyscallEvent.Async, nil
 	case "bind.retval":
@@ -10502,6 +10513,8 @@ func (e *Event) GetFieldEventType(field eval.Field) (eval.EventType, error) {
 		return "bind", nil
 	case "bind.addr.port":
 		return "bind", nil
+	case "bind.addr.protocol":
+		return "bind", nil
 	case "bind.async":
 		return "bind", nil
 	case "bind.retval":
@@ -11806,6 +11819,8 @@ func (e *Event) GetFieldType(field eval.Field) (reflect.Kind, error) {
 	case "bind.addr.ip":
 		return reflect.Struct, nil
 	case "bind.addr.port":
+		return reflect.Int, nil
+	case "bind.addr.protocol":
 		return reflect.Int, nil
 	case "bind.async":
 		return reflect.Bool, nil
@@ -13126,6 +13141,13 @@ func (e *Event) SetFieldValue(field eval.Field, value interface{}) error {
 			return &eval.ErrValueTypeMismatch{Field: "Bind.Addr.Port"}
 		}
 		e.Bind.Addr.Port = uint16(v)
+		return nil
+	case "bind.addr.protocol":
+		v, ok := value.(int)
+		if !ok {
+			return &eval.ErrValueTypeMismatch{Field: "Bind.Protocol"}
+		}
+		e.Bind.Protocol = uint8(v)
 		return nil
 	case "bind.async":
 		var ok bool

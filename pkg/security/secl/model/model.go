@@ -815,8 +815,9 @@ type DNSEvent struct {
 type BindEvent struct {
 	SyscallEvent
 
-	AddrFamily uint16        `field:"addr.family"` // Address family
-	Addr       IPPortContext `field:"addr"`        // Bound address
+	Addr       IPPortContext `field:"addr"`          // Bound address
+	AddrFamily uint16        `field:"addr.family"`   // Address family
+	Protocol   uint8         `field:"addr.protocol"` // Socket protocol
 }
 
 // NetDevice represents a network device

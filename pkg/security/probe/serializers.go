@@ -268,12 +268,13 @@ type IPPortSerializer struct {
 	Port uint16 `json:"port" jsonschema_description:"Port number"`
 }
 
-// IPPortFamilySerializer is used to serialize an IP, Port and address family context to JSON
+// IPPortFamilyProtocolSerializer is used to serialize an IP, Port, address family and protocol context to JSON
 // easyjson:json
-type IPPortFamilySerializer struct {
-	Family string `json:"family" jsonschema_description:"Address family"`
-	IP     string `json:"ip" jsonschema_description:"IP address"`
-	Port   uint16 `json:"port" jsonschema_description:"Port number"`
+type IPPortFamilyProtocolSerializer struct {
+	Family   string `json:"family" jsonschema_description:"Address family"`
+	IP       string `json:"ip" jsonschema_description:"IP address"`
+	Port     uint16 `json:"port" jsonschema_description:"Port number"`
+	Protocol string `json:"protocol" jsonschema_description:"Socket protocol"`
 }
 
 // NetworkContextSerializer serializes the network context to JSON
@@ -329,7 +330,7 @@ type SpliceEventSerializer struct {
 // BindEventSerializer serializes a bind event to JSON
 // easyjson:json
 type BindEventSerializer struct {
-	Addr *IPPortFamilySerializer `json:"addr" jsonschema_description:"Bound address (if any)"`
+	Addr *IPPortFamilyProtocolSerializer `json:"addr" jsonschema_description:"Bound address (if any)"`
 }
 
 // EventSerializer serializes an event to JSON
@@ -696,11 +697,13 @@ func newIPPortSerializer(c *model.IPPortContext) *IPPortSerializer {
 	}
 }
 
-func newIPPortFamilySerializer(c *model.IPPortContext, family string) *IPPortFamilySerializer {
-	return &IPPortFamilySerializer{
-		IP:     c.IPNet.IP.String(),
-		Port:   c.Port,
-		Family: family,
+func newIPPortFamilyProtocolSerializer(c *model.IPPortContext, family string,
+	protocol string) *IPPortFamilyProtocolSerializer {
+	return &IPPortFamilyProtocolSerializer{
+		IP:       c.IPNet.IP.String(),
+		Port:     c.Port,
+		Family:   family,
+		Protocol: protocol,
 	}
 }
 
@@ -725,7 +728,9 @@ func newNetworkContextSerializer(e *Event) *NetworkContextSerializer {
 
 func newBindEventSerializer(e *Event) *BindEventSerializer {
 	bes := &BindEventSerializer{
-		Addr: newIPPortFamilySerializer(&e.Bind.Addr, model.AddressFamily(e.Bind.AddrFamily).String()),
+		Addr: newIPPortFamilyProtocolSerializer(&e.Bind.Addr,
+			model.AddressFamily(e.Bind.AddrFamily).String(),
+			model.L4Protocol(e.Bind.Protocol).String()),
 	}
 	return bes
 }

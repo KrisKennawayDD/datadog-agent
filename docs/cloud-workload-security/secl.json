@@ -537,6 +537,11 @@
           "definition": "Port number"
         },
         {
+          "name": "bind.addr.protocol",
+          "type": "int",
+          "definition": "Socket protocol"
+        },
+        {
           "name": "bind.async",
           "type": "bool",
           "definition": "True if the syscall was asynchronous"

@@ -271,12 +271,24 @@ __attribute__((always_inline)) u32 get_netns_from_sock(struct sock *sk) {
     return get_netns_from_net(net);
 }
 
-__attribute__((always_inline)) u32 get_netns_from_socket(struct socket *socket) {
+__attribute__((always_inline)) u8 get_protocol_from_sock(struct sock *sk) {
+    u64 sock_sk_protocol_offset;
+    LOAD_CONSTANT("sock_sk_protocol_offset", sock_sk_protocol_offset);
+
+    u8 protocol = 0;
+    bpf_probe_read(&protocol, sizeof(protocol), (void *)sk + sock_sk_protocol_offset);
+    return protocol;
+}
+
+__attribute__((always_inline)) u32 get_netns_and_protocol_from_socket(struct socket *socket, u8* protocol) {
     u64 socket_sock_offset;
     LOAD_CONSTANT("socket_sock_offset", socket_sock_offset);
 
     struct sock *sk = NULL;
     bpf_probe_read(&sk, sizeof(sk), (void *)socket + socket_sock_offset);
+
+    *protocol = get_protocol_from_sock(sk);
+
     return get_netns_from_sock(sk);
 }
 

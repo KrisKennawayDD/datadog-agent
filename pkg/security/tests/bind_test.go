@@ -48,8 +48,8 @@ func TestBindEvent(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	test.Run(t, "bind-af-inet-any-success", func(t *testing.T, kind wrapperType, cmdFunc func(cmd string, args []string, envs []string) *exec.Cmd) {
-		args := []string{"bind", "AF_INET", "any"}
+	test.Run(t, "bind-af-inet-any-success-tcp", func(t *testing.T, kind wrapperType, cmdFunc func(cmd string, args []string, envs []string) *exec.Cmd) {
+		args := []string{"bind", "AF_INET", "any", "tcp"}
 		envs := []string{}
 
 		test.WaitSignal(t, func() error {
@@ -65,6 +65,32 @@ func TestBindEvent(t *testing.T) {
 			assert.Equal(t, uint16(4242), event.Bind.Addr.Port, "wrong address port")
 			assert.Equal(t, string("0.0.0.0/32"), event.Bind.Addr.IPNet.String(), "wrong address")
 			assert.Equal(t, int64(0), event.Bind.Retval, "wrong retval")
+			assert.Equal(t, uint8(unix.IPPROTO_TCP), event.Bind.Protocol, "wrong protocol")
+
+			if !validateBindSchema(t, event) {
+				t.Error(event.String())
+			}
+		})
+	})
+
+	test.Run(t, "bind-af-inet-any-success-udp", func(t *testing.T, kind wrapperType, cmdFunc func(cmd string, args []string, envs []string) *exec.Cmd) {
+		args := []string{"bind", "AF_INET", "any", "udp"}
+		envs := []string{}
+
+		test.WaitSignal(t, func() error {
+			cmd := cmdFunc(syscallTester, args, envs)
+			if out, err := cmd.CombinedOutput(); err != nil {
+				return fmt.Errorf("%s: %w", out, err)
+			}
+
+			return nil
+		}, func(event *sprobe.Event, r *rules.Rule) {
+			assert.Equal(t, "bind", event.GetType(), "wrong event type")
+			assert.Equal(t, uint16(unix.AF_INET), event.Bind.AddrFamily, "wrong address family")
+			assert.Equal(t, uint16(4242), event.Bind.Addr.Port, "wrong address port")
+			assert.Equal(t, string("0.0.0.0/32"), event.Bind.Addr.IPNet.String(), "wrong address")
+			assert.Equal(t, int64(0), event.Bind.Retval, "wrong retval")
+			assert.Equal(t, uint8(unix.IPPROTO_UDP), event.Bind.Protocol, "wrong protocol")
 
 			if !validateBindSchema(t, event) {
 				t.Error(event.String())
@@ -89,6 +115,7 @@ func TestBindEvent(t *testing.T) {
 			assert.Equal(t, uint16(4242), event.Bind.Addr.Port, "wrong address port")
 			assert.Equal(t, string("::/128"), event.Bind.Addr.IPNet.String(), "wrong address")
 			assert.Equal(t, int64(0), event.Bind.Retval, "wrong retval")
+			assert.Equal(t, uint8(unix.IPPROTO_TCP), event.Bind.Protocol, "wrong protocol")
 
 			if !validateBindSchema(t, event) {
 				t.Error(event.String())
@@ -114,6 +141,7 @@ func TestBindEvent(t *testing.T) {
 			assert.Equal(t, net.IPNet{IP: net.IP(nil), Mask: net.IPMask(nil)},
 				event.Bind.Addr.IPNet, "wrong address")
 			assert.Equal(t, int64(0), event.Bind.Retval, "wrong retval")
+			assert.Equal(t, uint8(0), event.Bind.Protocol, "wrong protocol")
 
 			if !validateBindSchema(t, event) {
 				t.Error(event.String())

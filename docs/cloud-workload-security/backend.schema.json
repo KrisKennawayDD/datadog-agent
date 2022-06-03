@@ -148,7 +148,7 @@
       "properties": {
         "addr": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/IPPortFamily",
+          "$ref": "#/definitions/IPPortFamilyProtocol",
           "description": "Bound address (if any)"
         }
       },
@@ -465,11 +465,12 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "IPPortFamily": {
+    "IPPortFamilyProtocol": {
       "required": [
         "family",
         "ip",
-        "port"
+        "port",
+        "protocol"
       ],
       "properties": {
         "family": {
@@ -483,6 +484,10 @@
         "port": {
           "type": "integer",
           "description": "Port number"
+        },
+        "protocol": {
+          "type": "string",
+          "description": "Socket protocol"
         }
       },
       "additionalProperties": false,

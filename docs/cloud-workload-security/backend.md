@@ -221,7 +221,7 @@ CWS logs have the following JSON schema:
     ],
     "properties": {
         "addr": {
-            "$ref": "#/definitions/IPPortFamily",
+            "$ref": "#/definitions/IPPortFamilyProtocol",
             "description": "Bound address (if any)"
         }
     },
@@ -237,7 +237,7 @@ CWS logs have the following JSON schema:
 
 | References |
 | ---------- |
-| [IPPortFamily](#ipportfamily) |
+| [IPPortFamilyProtocol](#ipportfamilyprotocol) |
 
 ## `ContainerContext`
 
@@ -696,7 +696,7 @@ CWS logs have the following JSON schema:
 | `port` | Port number |
 
 
-## `IPPortFamily`
+## `IPPortFamilyProtocol`
 
 
 {{< code-block lang="json" collapsible="true" >}}
@@ -704,7 +704,8 @@ CWS logs have the following JSON schema:
     "required": [
         "family",
         "ip",
-        "port"
+        "port",
+        "protocol"
     ],
     "properties": {
         "family": {
@@ -718,6 +719,10 @@ CWS logs have the following JSON schema:
         "port": {
             "type": "integer",
             "description": "Port number"
+        },
+        "protocol": {
+            "type": "string",
+            "description": "Socket protocol"
         }
     },
     "additionalProperties": false,
@@ -731,6 +736,7 @@ CWS logs have the following JSON schema:
 | `family` | Address family |
 | `ip` | IP address |
 | `port` | Port number |
+| `protocol` | Socket protocol |
 
 
 ## `MMapEvent`
