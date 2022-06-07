@@ -23,6 +23,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 505,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 368
@@ -50,6 +51,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 505,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 368
@@ -78,6 +80,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 505,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 368
@@ -105,6 +108,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 505,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 376
@@ -132,6 +136,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 505,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 368
@@ -160,6 +165,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 505,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 368
@@ -184,6 +190,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 329,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 400,
 			"tty_offset": 384
@@ -208,6 +215,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 329,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 400,
 			"tty_offset": 384
@@ -231,6 +239,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 321,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 400,
 			"tty_offset": 416
@@ -253,6 +262,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 321,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 400,
 			"tty_offset": 416
@@ -275,6 +285,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 321,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 400,
 			"tty_offset": 416
@@ -299,6 +310,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 505,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 376
@@ -325,6 +337,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 505,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 376
@@ -351,6 +364,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 505,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 368
@@ -380,6 +394,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 537,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 392
@@ -409,6 +424,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 537,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 392
@@ -438,6 +454,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 537,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 392
@@ -467,6 +484,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 537,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 392
@@ -496,6 +514,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 537,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 392
@@ -525,6 +544,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 505,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 400
@@ -554,6 +574,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 505,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 400
@@ -577,6 +598,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 329,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 400,
 			"tty_offset": 416
@@ -600,6 +622,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 329,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 400,
 			"tty_offset": 408
@@ -629,6 +652,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 532,
 			"socket_sock_offset": 24,
 			"tty_name_offset": 360,
 			"tty_offset": 408
@@ -658,6 +682,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 529,
 			"socket_sock_offset": 24,
 			"tty_name_offset": 368,
 			"tty_offset": 400
@@ -687,6 +712,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 337,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 312,
 			"tty_offset": 416
@@ -708,6 +734,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 337,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 312,
 			"tty_offset": 416
@@ -732,6 +759,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 337,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 312,
 			"tty_offset": 416
@@ -761,6 +789,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 337,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 312,
 			"tty_offset": 416
@@ -790,6 +819,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 505,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 408
@@ -819,6 +849,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 505,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 408
@@ -848,6 +879,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 529,
 			"socket_sock_offset": 24,
 			"tty_name_offset": 368,
 			"tty_offset": 408
@@ -878,6 +910,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 537,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 392
@@ -908,6 +941,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 537,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 392
@@ -939,6 +973,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 505,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 400
@@ -970,6 +1005,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 753,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 496,
 			"tty_offset": 440
@@ -994,6 +1030,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 329,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 400,
 			"tty_offset": 384
@@ -1018,6 +1055,7 @@
 			"sizeof_upid": 32,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 529,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 496,
 			"tty_offset": 464
@@ -1048,6 +1086,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 505,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 368
@@ -1079,6 +1118,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 529,
 			"socket_sock_offset": 24,
 			"tty_name_offset": 368,
 			"tty_offset": 400
@@ -1109,6 +1149,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 505,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 376
@@ -1140,6 +1181,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 529,
 			"socket_sock_offset": 24,
 			"tty_name_offset": 368,
 			"tty_offset": 408
@@ -1170,6 +1212,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 513,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 400
@@ -1201,6 +1244,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 532,
 			"socket_sock_offset": 24,
 			"tty_name_offset": 368,
 			"tty_offset": 408
@@ -1231,6 +1275,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 513,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 408
@@ -1262,6 +1307,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 529,
 			"socket_sock_offset": 24,
 			"tty_name_offset": 368,
 			"tty_offset": 400
@@ -1293,6 +1339,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 532,
 			"socket_sock_offset": 24,
 			"tty_name_offset": 368,
 			"tty_offset": 408
@@ -1324,6 +1371,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 529,
 			"socket_sock_offset": 24,
 			"tty_name_offset": 368,
 			"tty_offset": 408
@@ -1353,6 +1401,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 497,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 368
@@ -1382,6 +1431,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 497,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 368
@@ -1412,6 +1462,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 497,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 368
@@ -1443,6 +1494,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 529,
 			"socket_sock_offset": 24,
 			"tty_name_offset": 368,
 			"tty_offset": 400
@@ -1473,6 +1525,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 497,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 368
@@ -1502,6 +1555,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 497,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 368
@@ -1531,6 +1585,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 497,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 368
@@ -1561,6 +1616,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 497,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 368
@@ -1590,6 +1646,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 497,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 376
@@ -1620,6 +1677,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 497,
 			"socket_sock_offset": 32,
 			"tty_name_offset": 368,
 			"tty_offset": 376
@@ -1651,6 +1709,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 529,
 			"socket_sock_offset": 24,
 			"tty_name_offset": 368,
 			"tty_offset": 408
@@ -1682,6 +1741,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 532,
 			"socket_sock_offset": 24,
 			"tty_name_offset": 360,
 			"tty_offset": 400
@@ -1713,6 +1773,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 532,
 			"socket_sock_offset": 24,
 			"tty_name_offset": 360,
 			"tty_offset": 408
@@ -1744,6 +1805,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 532,
 			"socket_sock_offset": 24,
 			"tty_name_offset": 368,
 			"tty_offset": 400
@@ -1775,6 +1837,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 532,
 			"socket_sock_offset": 24,
 			"tty_name_offset": 360,
 			"tty_offset": 400
@@ -1806,6 +1869,7 @@
 			"sizeof_upid": 16,
 			"sock_common_skc_family_offset": 16,
 			"sock_common_skc_net_offset": 48,
+			"sock_sk_protocol_offset": 532,
 			"socket_sock_offset": 24,
 			"tty_name_offset": 360,
 			"tty_offset": 408
@@ -2216,6 +2280,13 @@
 			"version": "2",
 			"arch": "arm64",
 			"uname_release": "4.14.275-207.503.amzn2.aarch64",
+			"cindex": 2
+		},
+		{
+			"distrib": "amzn",
+			"version": "2",
+			"arch": "arm64",
+			"uname_release": "4.14.276-211.499.amzn2.aarch64",
 			"cindex": 2
 		},
 		{
@@ -2678,6 +2749,13 @@
 			"version": "2",
 			"arch": "x86_64",
 			"uname_release": "4.14.275-207.503.amzn2.x86_64",
+			"cindex": 5
+		},
+		{
+			"distrib": "amzn",
+			"version": "2",
+			"arch": "x86_64",
+			"uname_release": "4.14.276-211.499.amzn2.x86_64",
 			"cindex": 5
 		},
 		{
@@ -3546,6 +3624,13 @@
 			"version": "7",
 			"arch": "x86_64",
 			"uname_release": "3.10.0-1160.62.1.el7.x86_64",
+			"cindex": 25
+		},
+		{
+			"distrib": "centos",
+			"version": "7",
+			"arch": "x86_64",
+			"uname_release": "3.10.0-1160.66.1.el7.x86_64",
 			"cindex": 25
 		},
 		{
@@ -4805,6 +4890,20 @@
 			"distrib": "ubuntu",
 			"version": "18.04",
 			"arch": "arm64",
+			"uname_release": "4.15.0-1128-aws",
+			"cindex": 50
+		},
+		{
+			"distrib": "ubuntu",
+			"version": "18.04",
+			"arch": "arm64",
+			"uname_release": "4.15.0-1130-aws",
+			"cindex": 50
+		},
+		{
+			"distrib": "ubuntu",
+			"version": "18.04",
+			"arch": "arm64",
 			"uname_release": "4.15.0-115-generic",
 			"cindex": 48
 		},
@@ -5065,6 +5164,20 @@
 			"version": "18.04",
 			"arch": "arm64",
 			"uname_release": "4.15.0-176-generic",
+			"cindex": 50
+		},
+		{
+			"distrib": "ubuntu",
+			"version": "18.04",
+			"arch": "arm64",
+			"uname_release": "4.15.0-177-generic",
+			"cindex": 50
+		},
+		{
+			"distrib": "ubuntu",
+			"version": "18.04",
+			"arch": "arm64",
+			"uname_release": "4.15.0-180-generic",
 			"cindex": 50
 		},
 		{
@@ -7024,6 +7137,13 @@
 			"distrib": "ubuntu",
 			"version": "18.04",
 			"arch": "x86_64",
+			"uname_release": "4.15.0-1122-gcp",
+			"cindex": 55
+		},
+		{
+			"distrib": "ubuntu",
+			"version": "18.04",
+			"arch": "x86_64",
 			"uname_release": "4.15.0-1123-aws",
 			"cindex": 55
 		},
@@ -7047,6 +7167,13 @@
 			"arch": "x86_64",
 			"uname_release": "4.15.0-1124-azure",
 			"cindex": 57
+		},
+		{
+			"distrib": "ubuntu",
+			"version": "18.04",
+			"arch": "x86_64",
+			"uname_release": "4.15.0-1124-gcp",
+			"cindex": 55
 		},
 		{
 			"distrib": "ubuntu",
@@ -7087,8 +7214,22 @@
 			"distrib": "ubuntu",
 			"version": "18.04",
 			"arch": "x86_64",
+			"uname_release": "4.15.0-1128-aws",
+			"cindex": 55
+		},
+		{
+			"distrib": "ubuntu",
+			"version": "18.04",
+			"arch": "x86_64",
 			"uname_release": "4.15.0-1129-azure",
 			"cindex": 57
+		},
+		{
+			"distrib": "ubuntu",
+			"version": "18.04",
+			"arch": "x86_64",
+			"uname_release": "4.15.0-1130-aws",
+			"cindex": 55
 		},
 		{
 			"distrib": "ubuntu",
@@ -7130,6 +7271,20 @@
 			"version": "18.04",
 			"arch": "x86_64",
 			"uname_release": "4.15.0-1137-azure",
+			"cindex": 57
+		},
+		{
+			"distrib": "ubuntu",
+			"version": "18.04",
+			"arch": "x86_64",
+			"uname_release": "4.15.0-1138-azure",
+			"cindex": 57
+		},
+		{
+			"distrib": "ubuntu",
+			"version": "18.04",
+			"arch": "x86_64",
+			"uname_release": "4.15.0-1139-azure",
 			"cindex": 57
 		},
 		{
@@ -7396,6 +7551,20 @@
 			"version": "18.04",
 			"arch": "x86_64",
 			"uname_release": "4.15.0-176-generic",
+			"cindex": 55
+		},
+		{
+			"distrib": "ubuntu",
+			"version": "18.04",
+			"arch": "x86_64",
+			"uname_release": "4.15.0-177-generic",
+			"cindex": 55
+		},
+		{
+			"distrib": "ubuntu",
+			"version": "18.04",
+			"arch": "x86_64",
+			"uname_release": "4.15.0-180-generic",
 			"cindex": 55
 		},
 		{

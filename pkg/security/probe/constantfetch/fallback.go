@@ -80,6 +80,8 @@ func (f *FallbackConstantFetcher) appendRequest(id string) {
 		value = getNetNSOffset(f.kernelVersion)
 	case "net_proc_inum_offset":
 		value = getNetProcINumOffset(f.kernelVersion)
+	case "sock_sk_protocol_offset":
+		value = getSockSkProtocolOffset(f.kernelVersion)
 	case "sock_common_skc_net_offset":
 		value = getSockCommonSKCNetOffset(f.kernelVersion)
 	case "socket_sock_offset":
@@ -609,6 +611,10 @@ func getNetNSOffset(kv *kernel.Version) uint64 {
 
 func getNetProcINumOffset(kv *kernel.Version) uint64 {
 	return uint64(72)
+}
+
+func getSockSkProtocolOffset(kv *kernel.Version) uint64 {
+	return uint64(529)
 }
 
 func getSockCommonSKCNetOffset(kv *kernel.Version) uint64 {
