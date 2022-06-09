@@ -616,7 +616,17 @@ func getNetProcINumOffset(kv *kernel.Version) uint64 {
 }
 
 func getProtoNameOffset(kv *kernel.Version) uint64 {
-	return uint64(368)
+	offset := uint64(368)
+
+	switch {
+	case kv.Code < kernel.Kernel4_19:
+		offset = 344
+	case kv.Code >= kernel.Kernel5_10 && kv.Code < kernel.Kernel5_15:
+		offset = 360
+	case kv.Code >= kernel.Kernel5_15:
+		offset = 376
+	}
+	return offset
 }
 
 func getSockCommonSKCProtOffset(kv *kernel.Version) uint64 {
