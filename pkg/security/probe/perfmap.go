@@ -13,6 +13,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/DataDog/datadog-agent/pkg/security/config"
 	seclog "github.com/DataDog/datadog-agent/pkg/security/log"
 	manager "github.com/DataDog/ebpf-manager"
 	"github.com/pkg/errors"
@@ -29,7 +30,7 @@ type OrderedPerfMap struct {
 }
 
 // Init the event stream.
-func (m *OrderedPerfMap) Init(mgr *manager.Manager, monitor *Monitor) error {
+func (m *OrderedPerfMap) Init(mgr *manager.Manager, monitor *Monitor, config *config.Config) error {
 	var ok bool
 	if m.perfMap, ok = mgr.GetPerfMap(eventStreamMap); !ok {
 		return errors.New("couldn't find events perf map")
@@ -38,6 +39,10 @@ func (m *OrderedPerfMap) Init(mgr *manager.Manager, monitor *Monitor) error {
 	m.perfMap.PerfMapOptions = manager.PerfMapOptions{
 		DataHandler: m.reOrderer.HandleEvent,
 		LostHandler: m.handleLostEvents,
+	}
+
+	if config.EventStreamBufferSize != 0 {
+		m.perfMap.PerfMapOptions.PerfRingBufferSize = config.EventStreamBufferSize
 	}
 
 	m.monitor = monitor
