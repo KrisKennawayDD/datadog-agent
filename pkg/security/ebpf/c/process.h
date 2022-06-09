@@ -7,7 +7,7 @@
 #include "container.h"
 #include "span.h"
 
-#define DECLARE_EQUAL_TO(s) static inline int equal_to_##s(char *str) { \
+#define DECLARE_EQUAL_TO_SUFFIXED(suffix, s) static inline int equal_to_##suffix(char *str) { \
         char s1[sizeof(#s)];                                            \
         bpf_probe_read(&s1, sizeof(s1), str);                           \
         char s2[] = #s;                                                 \
@@ -16,6 +16,9 @@
                 return 0;                                               \
         return 1;                                                       \
     }                                                                   \
+
+#define DECLARE_EQUAL_TO(s) \
+    DECLARE_EQUAL_TO_SUFFIXED(s, s)
 
 #define IS_EQUAL_TO(str, s) equal_to_##s(str)
 
@@ -298,7 +301,7 @@ DECLARE_EQUAL_TO(RAWv6)
 DECLARE_EQUAL_TO(SCTP)
 DECLARE_EQUAL_TO(SCTPv6)
 
-/* DECLARE_EQUAL_TO(UDP-Lite) */
+DECLARE_EQUAL_TO_SUFFIXED(UDPLite, UDP-Lite)
 DECLARE_EQUAL_TO(UDPLITEv6)
 
 __attribute__((always_inline)) u8 get_ipproto_id(char* proto) {
@@ -310,7 +313,7 @@ __attribute__((always_inline)) u8 get_ipproto_id(char* proto) {
         return IPPROTO_ICMP;
     else if (IS_EQUAL_TO(proto, RAW) || IS_EQUAL_TO(proto, RAWv6))
         return IPPROTO_IP;
-    else if (IS_EQUAL_TO(proto, UDPLITEv6)) /* TODO: check also for UDP-Lite */
+    else if (IS_EQUAL_TO(proto, UDPLite) || IS_EQUAL_TO(proto, UDPLITEv6))
         return IPPROTO_UDPLITE;
     else if (IS_EQUAL_TO(proto, SCTP) || IS_EQUAL_TO(proto, SCTPv6))
         return IPPROTO_SCTP;
