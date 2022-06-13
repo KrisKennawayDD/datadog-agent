@@ -1159,7 +1159,7 @@ LIMIT 1
 	}
 }
 
-func TestPGJsonOperators(t *testing.T) {
+func TestPGJSONOperators(t *testing.T) {
 	assert := assert.New(t)
 	for _, tt := range []struct {
 		in, out string
