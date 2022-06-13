@@ -200,7 +200,7 @@ struct ad_container_id_comm {
     char comm[TASK_COMM_LEN];
 };
 
-struct bpf_map_def SEC("maps/activity_dump_buffer") activity_dump_buffer = {
+struct bpf_map_def SEC("maps/ad_container_id_comm_gen") ad_container_id_comm_gen = {
     .type = BPF_MAP_TYPE_PERCPU_ARRAY,
     .key_size = sizeof(u32),
     .value_size = sizeof(struct ad_container_id_comm),
@@ -214,7 +214,7 @@ __attribute__((always_inline)) void fill_activity_dump_discarder_state(void *ctx
     if (proc_entry != NULL) {
         // prepare cgroup and comm (for compatibility with old kernels)
         u32 key = 0;
-        struct ad_container_id_comm *buffer = bpf_map_lookup_elem(&activity_dump_buffer, &key);
+        struct ad_container_id_comm *buffer = bpf_map_lookup_elem(&ad_container_id_comm_gen, &key);
         if (!buffer) {
             return;
         }
